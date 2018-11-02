@@ -15,10 +15,46 @@ void StartupTask::Run(IBackgroundTaskInstance^ taskInstance)
 	GpioPin ^pin = gpioController->OpenPin(18);           // Opens a connection to the specified general-purpose I/O (GPIO) pin in exclusive mode.
 	pin->SetDriveMode(GpioPinDriveMode::Output);          // Sets the drive mode of the general-purpose I/O (GPIO) pin. The drive mode specifies whether the pin is configured as an input or an output, and determines how values are driven onto the pin.
 
+	const int UNIT_MS = 250;
 	while (true) {
-		pin->Write(GpioPinValue::High);  // Drives the specified value onto the general purpose I/O (GPIO) pin according to the current drive mode for the pin.
-		Sleep(500);                      // Suspends the execution of the current thread until the time-out interval elapses.
-		pin->Write(GpioPinValue::Low);
-		Sleep(500);
+		SignalDot(pin);
+		SignalDot(pin);
+		SignalDot(pin);
+
+		SignalLetterSeparation(pin);
+
+		SignalDash(pin);
+		SignalDash(pin);
+		SignalDash(pin);
+
+		SignalLetterSeparation(pin);
+
+		SignalDot(pin);
+		SignalDot(pin);
+		SignalDot(pin);
+
+		SignalWordSeparation(pin);
 	}
+}
+
+void StartupTask::SignalDot(GpioPin^ pin) {
+	pin->Write(GpioPinValue::High);
+	Sleep(UNIT_MS);
+	pin->Write(GpioPinValue::Low);
+	Sleep(UNIT_MS);
+}
+
+void StartupTask::SignalDash(GpioPin^ pin) {
+	pin->Write(GpioPinValue::High);
+	Sleep(3 * UNIT_MS);
+	pin->Write(GpioPinValue::Low);
+	Sleep(UNIT_MS);
+}
+
+void StartupTask::SignalLetterSeparation(GpioPin^ pin) {
+	Sleep(2* UNIT_MS);
+}
+
+void StartupTask::SignalWordSeparation(GpioPin^ pin) {
+	Sleep(6 * UNIT_MS);
 }
